@@ -1,21 +1,17 @@
-<div style="text-align:center;padding-top: 15px">
+<div align="center" style="text-align:center;padding-top: 15px">
     <img alt="logo-ouest-france" src="https://sipaui.sipaof.fr/downloads/logotheque/ouest-france-couleur.svg" height="100"/>
     <h1 style="margin: 0;padding: 0">QueryDSL</h1>
 </div>
+<div align="center" style="text-align: center">
 
----
-<div style="text-align: center">
-
-[![Build Status](https://github.com/Ouest-France/querydsl/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/PostgREST/postgrest/actions?query=branch%3Amain)
-[![Coverage Status](https://img.shields.io/codecov/c/github/postgrest/postgrpostgrest/main)](https://app.codecov.io/gh/PostgREST/postgrest)
-[![Hackage docs](https://img.shields.io/hackage/v/postgrest.svg?label=hackage)](http://hackage.haskell.org/package/postgrest)
+[![Build Status](https://github.com/Ouest-France/querydsl/actions/workflows/build.yml/badge.svg)](https://github.com/Ouest-France/querydsl/actions/workflows/build.yml)
+![Coverage](https://raw.githubusercontent.com/Ouest-France/querydsl/main/.github/badges/jacoco.svg)
 
 </div>
-QueryDSL is a unpostgrified annotation based DSL for querying multiple datasource
+
+QueryDSL is a unified annotation based DSL for querying multiple datasource
 
 ## Getting Started
-
---- 
 
 QueryDSL is a **Domain Specific Language** based on annotation processing to transform java classes to dedicated query for a specific datasource.
 You can write your own connector implementation by adding this library to your code
@@ -42,8 +38,6 @@ implementation 'fr.ouestfrance.querydsl:querydsl:${querydsl.version}'
 
 ## How does it work
 
----
-
 QueryDSL transforms annotations from your search object to filterModel that you can map to a specific connector.
 
 **Search object using annotations**
@@ -68,7 +62,7 @@ class UserSearch {
 **Concrete query using PostgREST**
 
 ```properties
-GET /users?name=like.Jean%20Doe
+GET /users?name=like.John%20Doe
               &service=eq.CIA
               &startDate=lte.2023-12-12
               &or=(endDate.eq.null, endDate.gte.2023-12-12)
@@ -85,7 +79,6 @@ AND (endDate is null OR endDate > "2023-12-12")
 
 ### Create your mappers
 
----
 
 To achieve the transformations between annotation based and concrete source, you have to write Mappers
 
@@ -153,8 +146,6 @@ public class InMapper extends Mapper<String> {
 
 ### Create a processor Service
 
----
-
 You have to bind your mappers to a processorService 
 
 ```java 
@@ -176,10 +167,9 @@ public class PostgrestQueryProcessorService implements QueryDslProcessorService<
 then you can add it to an abstract repository usage and reduce the amount of condition on your code
 
 ```java
-import fr.ouestfrance.shared.querydsl.service.ext.QueryDslProcessorService;
+import fr.ouestfrance.querydsl.service.ext.QueryDslProcessorService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class PostgrestRepository<T> {
 
@@ -192,24 +182,21 @@ public abstract class PostgrestRepository<T> {
         List<String> queryStrings = processorService.process(criteria);
         return webClient.get(resourceUrl() + "?" + String.join("&", queryStrings));
     }
-    
+
     abstract String resourceUrl();
 }
 ```
 
 ## Need Help ?
 
----
 If you need help with the library please start a new thread QA / Issue on github
 
 ## Contributing
 
----
 If you want to request a feature or report a bug, please create a GitHub Issue
 
 If you want to make a contribution to the project, please create a PR
 
 ## License
 
----
 The QueryDSL is licensed under [MIT License](https://opensource.org/license/mit/)
