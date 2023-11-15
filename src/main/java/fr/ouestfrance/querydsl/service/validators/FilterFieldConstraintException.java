@@ -13,7 +13,7 @@ public class FilterFieldConstraintException extends RuntimeException {
     /**
      * List of violations
      */
-    private final List<FilterFieldViolation> violations;
+    private final transient List<FilterFieldViolation> violations;
     /**
      * Class of the bean scanned
      */

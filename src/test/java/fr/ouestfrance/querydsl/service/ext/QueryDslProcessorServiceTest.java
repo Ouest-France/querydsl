@@ -32,8 +32,13 @@ class QueryDslProcessorServiceTest {
         object.setValidityDate(LocalDate.of(2023, 12, 12));
         object.setValid(true);
         List<String> translate = translatorService.process(object);
-        System.out.println(translate);
         assertEquals(4, translate.size());
         assertLinesMatch(List.of("productCode=25", "startDate=2023-12-12", "endDate=2023-12-12", "valid=true"), translate);
+    }
+
+    @Test
+    void shouldTranslateWithNullValue() {
+        List<String> translate = translatorService.process(null);
+        assertEquals(0, translate.size());
     }
 }

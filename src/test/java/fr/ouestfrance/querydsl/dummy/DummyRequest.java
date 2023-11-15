@@ -27,4 +27,7 @@ public class DummyRequest {
 
     @FilterField
     private boolean valid;
+
+    private String noFilterField;
 }
+
