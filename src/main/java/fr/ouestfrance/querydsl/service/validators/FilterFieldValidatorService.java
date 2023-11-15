@@ -16,16 +16,16 @@ import java.util.Optional;
  * FilterFieldValidator service allow to check the validity of annotated clazz
  * Some filters operations can't be applied to some types.
  * Valid Examples :
- * <pre>
+ * <pre>{@code
  *     @FilterField(operation=FilterFieldOperation.IN)
  *     Collection<String> codes;
  *
  *     @FilterField(operation=FilterFieldOperation.GT)
  *     Long quantity;
- * </pre>
+ * }</pre>
  * <p>
  * Invalid Examples :
- * <pre>
+ * <pre>{@code
  *     @FilterField(operation=FilterFieldOperation.EQ)
  *     Collection<String> codes; // equals can apply only on Comparable
  *
@@ -34,7 +34,7 @@ import java.util.Optional;
  *
  *     @FilterField(operation=FilterFieldOperation.LIKE)
  *     Long quantity; // Like can apply only on String
- * </pre>
+ * }</pre>
  */
 public class FilterFieldValidatorService {
 

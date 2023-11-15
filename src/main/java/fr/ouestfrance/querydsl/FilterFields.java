@@ -13,6 +13,7 @@ public @interface FilterFields {
 
     /**
      * List of filterField, using value allow to avoid attribute name
+     * @return list of filterField
      */
     FilterField[] value() default {};
 }

@@ -4,6 +4,7 @@ import fr.ouestfrance.querydsl.FilterOperation;
 import fr.ouestfrance.querydsl.model.FilterFieldModel;
 import fr.ouestfrance.querydsl.service.FilterFieldAnnotationProcessorService;
 import fr.ouestfrance.querydsl.utils.ReflectUtils;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -12,9 +13,9 @@ import java.util.List;
 /**
  * QueryDslProcessorService is an SPI extension that allow to write a custom translator to this DSL
  *
- * @param <T> Type of the returned object
+ * @param <T> Type of returned object
  * Example: YOu can define a queryStringTranslatorService that transform filterField annotations to rest call
- * <pre>
+ * <pre>{@code
  * class QueryStringTranslatorService extends TranslatorService<String>{
  *      List<Mapper<String>> mappers = List.of(InMapper, EqualsMapper, ...);
  *
@@ -23,10 +24,9 @@ import java.util.List;
  *           .orElse(new DefaultMapper());
  *      }
  * }
- *
- * </pre>
+ * }</pre>
  * With mappers implementations like this
- * <pre>
+ * <pre>{@code
  * class EqualsMapper implements Mapper<String>{
  *
  *      String map(FilterFieldInfoModel model, Object data){
@@ -34,10 +34,13 @@ import java.util.List;
  *           // "uuid.equals(25)"
  *      }
  * }
- * </pre>
+ * }</pre>
  */
 public interface QueryDslProcessorService<T> {
 
+    /**
+     * Annotation processor service
+     */
     FilterFieldAnnotationProcessorService filterFieldService = new FilterFieldAnnotationProcessorService();
 
     /**

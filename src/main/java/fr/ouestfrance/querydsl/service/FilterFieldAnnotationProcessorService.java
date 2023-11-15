@@ -8,12 +8,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Main service that allow to transform annotated class to modelbase representation
+ * Main service that allow to transform annotated class to model based representation
  * This service use {@link FilterFieldAnnotationScanner} to handle transformation and keep in cache representations
  */
 public class FilterFieldAnnotationProcessorService {
 
+    /**
+     * Cache of models
+     */
     private static final Map<Class<?>, List<FilterFieldModel>> CACHE = new ConcurrentHashMap<>();
+    /**
+     * Annotation scanner
+     */
     private final FilterFieldAnnotationScanner scanner = new FilterFieldAnnotationScanner();
 
     /**

@@ -7,21 +7,22 @@ import fr.ouestfrance.querydsl.model.FilterFieldInfoModel;
  * Interface that allow to transform operation to concrete filter objet depending on the connector source
  * It allows to implements multiple kind of mappers like Hibernate, Rest, SOAP, GraphQL, ...)
  * Example :
- * <pre>
+ * <pre>{@code
  * class RestEqualsMapper implements Mapper<String>{
  *     String map(FilterFieldInfoModel filterField, Object data){
  *         return filterField+"=eq."+data:
  *     }
  * }
- * </pre>
- * <pre>
+ * }</pre>
+ * <pre>{@code
  * class HibernateEqualsMapper implements Mapper<Specification>{
  *     protected HibernateEqualsMapper(CriteriaSpecificationBuilder cb, Context context)
  *     Specification<?> map(FilterFieldInfoModel filterField, Object data){
  *         return cb.equals(context.get(filterField), data):
  *     }
  * }
- * </pre>
+ * }</pre>
+ * @param <T> type of result
  */
 public interface Mapper<T> {
 
@@ -30,7 +31,7 @@ public interface Mapper<T> {
      *
      * @param filterField model of filterfield
      * @param data        value data to apply to filter
-     * @return <T> criteria representation
+     * @return criteria representation
      */
     T map(FilterFieldInfoModel filterField, Object data);
 

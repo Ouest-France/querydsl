@@ -10,6 +10,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * Utilities class that allow to simplify use of java reflect
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ReflectUtils {
 

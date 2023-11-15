@@ -12,6 +12,10 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 public @interface ValidatedBy {
-    /**Opération*/
+    /**
+     * Opération to handle
+     *
+     * @return operation
+     */
     FilterOperation[] value();
 }

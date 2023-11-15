@@ -15,16 +15,21 @@ public @interface FilterField {
 
     /**
      * Key of the filter, if empty the key will be replaced by the fieldName
+     *
+     * @return key
      */
     String key() default "";
 
     /**
      * Operation type of the filter, default is equals
+     *
+     * @return operation type
      */
     FilterOperation operation() default FilterOperation.EQ;
 
     /**
      * Should handle null possible value (isNull or isEqualsTo(XXX))
+     * @return <code>true</code> is should handle null, otherwise <code>false</code>
      */
     boolean orNull() default false;
 }

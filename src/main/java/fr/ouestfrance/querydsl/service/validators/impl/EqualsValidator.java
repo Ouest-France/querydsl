@@ -3,11 +3,13 @@ package fr.ouestfrance.querydsl.service.validators.impl;
 import fr.ouestfrance.querydsl.FilterOperation;
 import fr.ouestfrance.querydsl.service.validators.FilterFieldValidator;
 import fr.ouestfrance.querydsl.service.validators.ValidatedBy;
+import lombok.NoArgsConstructor;
 
 /**
  * Validator that handle filter operations giving equalities (EQ, NEQ)
  */
 @ValidatedBy({FilterOperation.EQ, FilterOperation.NEQ})
+@NoArgsConstructor
 public class EqualsValidator implements FilterFieldValidator {
 
     @Override
