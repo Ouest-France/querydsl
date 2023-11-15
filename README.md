@@ -4,8 +4,9 @@
 </div>
 <div align="center" style="text-align: center">
 
-[![Build Status](https://github.com/Ouest-France/querydsl/actions/workflows/build.yml/badge.svg)](https://github.com/Ouest-France/querydsl/actions/workflows/build.yml)
-![Coverage](https://raw.githubusercontent.com/Ouest-France/querydsl/main/.github/badges/jacoco.svg)
+[![Build Status][maven-build-image]][maven-build-url]
+[![Coverage][coverage-image]][coverage-url]
+[![Download][maven-central-image]][maven-central-url]
 
 </div>
 
@@ -200,3 +201,10 @@ If you want to make a contribution to the project, please create a PR
 ## License
 
 The QueryDSL is licensed under [MIT License](https://opensource.org/license/mit/)
+
+[maven-build-image]: https://github.com/Ouest-France/querydsl/actions/workflows/build.yml/badge.svg
+[maven-build-url]: https://github.com/Ouest-France/querydsl/actions/workflows/build.yml
+[coverage-image]: https://raw.githubusercontent.com/Ouest-France/querydsl/main/.github/badges/jacoco.svg
+[coverage-url]: https://codecov.io/gh/ouest-france/querydsl
+[maven-central-image]: https://maven-badges.herokuapp.com/maven-central/fr.ouestfrance.querydsl/querydsl/badge.svg
+[maven-central-url]: http://search.maven.org/#search%7Cga%7C1%7Cfr.ouestfrance.querydsl
