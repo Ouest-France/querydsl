@@ -6,6 +6,7 @@
 
 [![Build Status][maven-build-image]][maven-build-url]
 [![Coverage][coverage-image]][coverage-url]
+[![Quality Gate Status][sonar-image]][sonar-url]
 [![Download][maven-central-image]][maven-central-url]
 
 </div>
@@ -204,7 +205,9 @@ The QueryDSL is licensed under [MIT License](https://opensource.org/license/mit/
 
 [maven-build-image]: https://github.com/Ouest-France/querydsl/actions/workflows/build.yml/badge.svg
 [maven-build-url]: https://github.com/Ouest-France/querydsl/actions/workflows/build.yml
-[coverage-image]: https://raw.githubusercontent.com/Ouest-France/querydsl/main/.github/badges/jacoco.svg
+[coverage-image]: https://codecov.io/gh/ouest-france/querydsl/graph/badge.svg?token=ZLEG2TBML8
 [coverage-url]: https://codecov.io/gh/ouest-france/querydsl
 [maven-central-image]: https://maven-badges.herokuapp.com/maven-central/fr.ouestfrance.querydsl/querydsl/badge.svg
 [maven-central-url]: http://search.maven.org/#search%7Cga%7C1%7Cfr.ouestfrance.querydsl
+[sonar-image]: https://sonarcloud.io/api/project_badges/measure?project=Ouest-France_querydsl&metric=alert_status
+[sonar-url]: https://sonarcloud.io/summary/new_code?id=Ouest-France_querydsl
