@@ -28,7 +28,7 @@ jobs:
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'actions[bot]@github.com'
-        mvn release:prepare release:perform -B -s .github/deploy_settings.xml -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} -Dtag=${{ github.event.inputs.releaseVersion }}
+        mvn release:prepare release:perform -B -s .github/deploy_settings.xml -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}
       env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
