@@ -208,6 +208,6 @@ The QueryDSL is licensed under [MIT License](https://opensource.org/license/mit/
 [coverage-image]: https://codecov.io/gh/ouest-france/querydsl/graph/badge.svg?token=ZLEG2TBML8
 [coverage-url]: https://codecov.io/gh/ouest-france/querydsl
 [maven-central-image]: https://maven-badges.herokuapp.com/maven-central/fr.ouestfrance.querydsl/querydsl/badge.svg
-[maven-central-url]: http://search.maven.org/#search%7Cga%7C1%7Cfr.ouestfrance.querydsl
+[maven-central-url]: https://mvnrepository.com/artifact/fr.ouestfrance.querydsl/querydsl
 [sonar-image]: https://sonarcloud.io/api/project_badges/measure?project=Ouest-France_querydsl&metric=alert_status
 [sonar-url]: https://sonarcloud.io/summary/new_code?id=Ouest-France_querydsl
