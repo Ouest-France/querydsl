@@ -1,13 +1,12 @@
 package fr.ouestfrance.querydsl.service.validators;
 
 import fr.ouestfrance.querydsl.FilterOperation;
-import fr.ouestfrance.querydsl.model.FilterFieldModel;
+import fr.ouestfrance.querydsl.model.SimpleFilter;
 import fr.ouestfrance.querydsl.service.validators.impl.EqualsValidator;
 import fr.ouestfrance.querydsl.service.validators.impl.GreaterLessValidator;
 import fr.ouestfrance.querydsl.service.validators.impl.InValidator;
 import fr.ouestfrance.querydsl.service.validators.impl.LikeValidator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,21 +43,15 @@ public class FilterFieldValidatorService {
     private final List<FilterFieldValidator> validators = List.of(new EqualsValidator(), new GreaterLessValidator(), new InValidator(), new LikeValidator());
 
     /**
-     * Check each filterFieldModel and build a list of violations
+     * Check each filter and build a filter of violations
      *
-     * @param list list to check
-     * @return empty list if everything is ok, otherwise it returns list of {@link FilterFieldViolation}
+     * @param filter filter to check
+     * @return empty filter if everything is ok, otherwise it returns filter of {@link FilterFieldViolation}
      */
-    public List<FilterFieldViolation> validate(List<FilterFieldModel> list) {
-        List<FilterFieldViolation> violations = new ArrayList<>();
-        list.forEach(x -> x.getFilterFields().forEach(y ->
-                getValidator(y.getOperation()).ifPresent(val -> {
-                            if (!val.validate((Class<?>) x.getType())) {
-                                violations.add(new FilterFieldViolation(x.getName(), "Operation " + y.getOperation() + " " + val.message()));
-                            }
-                        }
-                )));
-        return violations;
+    public Optional<FilterFieldViolation> validate(SimpleFilter filter) {
+        return getValidator(filter.operation())
+                .filter(x-> !x.validate((Class<?>) filter.metadata().type()))
+                .map(x -> new FilterFieldViolation(filter.metadata().name(), "Operation " + filter.operation() + " " + x.message()));
     }
 
     /**

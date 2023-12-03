@@ -1,15 +1,18 @@
 package fr.ouestfrance.querydsl;
 
 import fr.ouestfrance.querydsl.dummy.DummyRequest;
+import fr.ouestfrance.querydsl.dummy.DummyRequestOrGroupMultipleField;
+import fr.ouestfrance.querydsl.dummy.DummyRequestOrSingleField;
 import fr.ouestfrance.querydsl.dummy.DummyViolatedRulesRequest;
-import fr.ouestfrance.querydsl.model.FilterFieldInfoModel;
-import fr.ouestfrance.querydsl.model.FilterFieldModel;
+import fr.ouestfrance.querydsl.model.SimpleFilter;
+import fr.ouestfrance.querydsl.model.Filter;
 import fr.ouestfrance.querydsl.service.FilterFieldAnnotationProcessorService;
 import fr.ouestfrance.querydsl.service.validators.FilterFieldConstraintException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,20 +22,35 @@ class FilterFieldServiceTest {
 
     @Test
     void shouldLoad() {
-        List<FilterFieldModel> model = service.process(DummyRequest.class);
+        List<Filter> model = service.process(DummyRequest.class);
+        System.out.println(model.stream().map(Filter::toString).collect(Collectors.joining("\n")));
         assertNotNull(model);
-        assertEquals(5, model.size());
+        assertEquals(6, model.size());
         AtomicBoolean shouldFindOrNull = new AtomicBoolean(false);
         model.forEach(x -> {
-            assertNotNull(x.getName());
-            assertNotNull(x.getGetter());
-            assertNotNull(x.getType());
-            assertNotNull(x.getFilterFields());
-            shouldFindOrNull.set(shouldFindOrNull.get() | x.getFilterFields().stream()
-                    .anyMatch(FilterFieldInfoModel::isOrNull));
+            assertNotNull(x);
+            assertTrue(x instanceof SimpleFilter);
+            SimpleFilter filter = (SimpleFilter)x;
+            assertNotNull(filter.metadata());
+            assertNotNull(filter.metadata().getter());
+            assertNotNull(filter.metadata().type());
+            shouldFindOrNull.set(shouldFindOrNull.get() | filter.orNull());
         });
-
         assertTrue(shouldFindOrNull.get());
+    }
+
+    @Test
+    void shouldLoadComplexe() {
+        List<Filter> model = service.process(DummyRequestOrSingleField.class);
+        System.out.println(model.stream().map(Filter::toString).collect(Collectors.joining("\n\n")));
+        assertNotNull(model);
+    }
+
+    @Test
+    void shouldLoadComplexeMultiple() {
+        List<Filter> model = service.process(DummyRequestOrGroupMultipleField.class);
+        System.out.println(model.stream().map(Filter::toString).collect(Collectors.joining("\n\n")));
+        assertNotNull(model);
     }
 
     @Test

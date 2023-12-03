@@ -1,7 +1,7 @@
 package fr.ouestfrance.querydsl.service.ext;
 
 import fr.ouestfrance.querydsl.FilterOperation;
-import fr.ouestfrance.querydsl.model.FilterFieldInfoModel;
+import fr.ouestfrance.querydsl.model.SimpleFilter;
 
 /**
  * Interface that allow to transform operation to concrete filter objet depending on the connector source
@@ -33,7 +33,7 @@ public interface Mapper<T> {
      * @param data        value data to apply to filter
      * @return criteria representation
      */
-    T map(FilterFieldInfoModel filterField, Object data);
+    T map(SimpleFilter filterField, Object data);
 
     /**
      * type of the operation handled by the mapper

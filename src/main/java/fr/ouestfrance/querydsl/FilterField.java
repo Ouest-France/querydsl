@@ -32,4 +32,9 @@ public @interface FilterField {
      * @return <code>true</code> is should handle null, otherwise <code>false</code>
      */
     boolean orNull() default false;
+    /**
+     * Group the filter in "or group" every filter with "orGroup" will be joined together
+     * @return group name
+     */
+    String groupName() default "";
 }

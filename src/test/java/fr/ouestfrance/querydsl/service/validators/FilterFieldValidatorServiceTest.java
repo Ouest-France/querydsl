@@ -1,13 +1,12 @@
 package fr.ouestfrance.querydsl.service.validators;
 
 import fr.ouestfrance.querydsl.FilterOperation;
-import fr.ouestfrance.querydsl.model.FilterFieldInfoModel;
-import fr.ouestfrance.querydsl.model.FilterFieldModel;
-import fr.ouestfrance.querydsl.service.validators.FilterFieldValidatorService;
-import fr.ouestfrance.querydsl.service.validators.FilterFieldViolation;
+import fr.ouestfrance.querydsl.model.FieldMetadata;
+import fr.ouestfrance.querydsl.model.SimpleFilter;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,20 +17,16 @@ class FilterFieldValidatorServiceTest {
 
     @Test
     void shouldSentViolations(){
-        List<FilterFieldViolation> violations = validator.validate(List.of
-                (new FilterFieldModel("test",
-                List.of(new FilterFieldInfoModel("", FilterOperation.EQ, false))
-                ,  null,List.class)));
+        Optional<FilterFieldViolation> violations = validator.validate(
+                new SimpleFilter("test", FilterOperation.EQ, false, new FieldMetadata("test", List.class, null)));
 
         assertFalse(violations.isEmpty());
     }
 
     @Test
     void shouldValidate(){
-        List<FilterFieldViolation> violations = validator.validate(List.of
-                (new FilterFieldModel("test",
-                        List.of(new FilterFieldInfoModel("", FilterOperation.EQ, false))
-                        , null, String.class)));
+        Optional<FilterFieldViolation> violations = validator.validate(
+                new SimpleFilter("test", FilterOperation.EQ, false, new FieldMetadata("test", String.class, null)));
 
         assertTrue(violations.isEmpty());
     }

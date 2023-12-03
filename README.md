@@ -87,7 +87,6 @@ To achieve the transformations between annotation based and concrete source, you
 ```java
 package postgrest.mappers;
 
-import fr.ouestfrance.querydsl.model.FilterFieldInfoModel;
 import fr.ouestfrance.querydsl.service.ext.Mapper;
 import fr.ouestfrance.querydsl.FilterOperation;
 
@@ -103,7 +102,9 @@ public class EqualsMapper implements Mapper<String> {
         // Will transform model to queryString "$key=eq.value" => example : service=eq.CIA
     }
 
-    public FilterOperation getOperation(){ return FilterOperation.EQ; }
+    public FilterOperation getOperation() {
+        return FilterOperation.EQ;
+    }
 }
 ```
 

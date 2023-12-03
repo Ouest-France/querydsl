@@ -1,6 +1,6 @@
 package fr.ouestfrance.querydsl.service;
 
-import fr.ouestfrance.querydsl.model.FilterFieldModel;
+import fr.ouestfrance.querydsl.model.Filter;
 import fr.ouestfrance.querydsl.service.scanner.FilterFieldAnnotationScanner;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class FilterFieldAnnotationProcessorService {
     /**
      * Cache of models
      */
-    private static final Map<Class<?>, List<FilterFieldModel>> CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, List<Filter>> CACHE = new ConcurrentHashMap<>();
     /**
      * Annotation scanner
      */
@@ -28,7 +28,7 @@ public class FilterFieldAnnotationProcessorService {
      * @param clazz clazz to handle
      * @return List of filterFieldModel
      */
-    public List<FilterFieldModel> process(Class<?> clazz) {
+    public List<Filter> process(Class<?> clazz) {
         return CACHE.computeIfAbsent(clazz, x -> scanner.scan(clazz));
     }
 }
