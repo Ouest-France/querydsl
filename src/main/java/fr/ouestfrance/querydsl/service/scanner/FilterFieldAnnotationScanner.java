@@ -2,14 +2,12 @@ package fr.ouestfrance.querydsl.service.scanner;
 
 import fr.ouestfrance.querydsl.FilterField;
 import fr.ouestfrance.querydsl.FilterFields;
-import fr.ouestfrance.querydsl.model.FieldMetadata;
-import fr.ouestfrance.querydsl.model.SimpleFilter;
-import fr.ouestfrance.querydsl.model.GroupFilter;
 import fr.ouestfrance.querydsl.model.Filter;
+import fr.ouestfrance.querydsl.model.GroupFilter;
+import fr.ouestfrance.querydsl.model.SimpleFilter;
 import fr.ouestfrance.querydsl.service.validators.FilterFieldConstraintException;
 import fr.ouestfrance.querydsl.service.validators.FilterFieldValidatorService;
 import fr.ouestfrance.querydsl.service.validators.FilterFieldViolation;
-import fr.ouestfrance.querydsl.utils.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -49,15 +47,14 @@ public class FilterFieldAnnotationScanner {
                 .filter(this::hasFilterFieldAnnotation)
                 .forEach(
                 field -> {
-                    FieldMetadata fieldMetadata = new FieldMetadata(field.getName(), field.getType(), ReflectUtils.getGetter(clazz, field));
-                    FilterFields filterFields = field.getAnnotation(FilterFields.class);
+                     FilterFields filterFields = field.getAnnotation(FilterFields.class);
                     List<FilterField> groupFilters = new ArrayList<>();
                     if (filterFields!= null && !filterFields.groupName().isEmpty()) {
                         groupFilters.addAll(Arrays.stream(filterFields.value()).toList());
                         GroupFilter filterAndGroup = new GroupFilter(UUID.randomUUID().toString(), new ArrayList<>(), GroupFilter.Operand.AND);
                         Arrays.stream(filterFields.value())
                                 .forEach(filterField -> {
-                                    SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), fieldMetadata);
+                                    SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), field);
                                     validatorService.validate(filter).ifPresent(violations::add);
                                     filterAndGroup.filters().add(filter);
                                 });
@@ -69,7 +66,7 @@ public class FilterFieldAnnotationScanner {
                             .filter(x-> !groupFilters.contains(x))
                             .forEach(
                             filterField -> {
-                                SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), fieldMetadata);
+                                SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), field);
                                 validatorService.validate(filter).ifPresent(violations::add);
                                 appendToGroup(rootGroup, filterField.groupName(), filter);
                             }

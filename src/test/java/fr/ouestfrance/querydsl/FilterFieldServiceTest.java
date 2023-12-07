@@ -31,9 +31,7 @@ class FilterFieldServiceTest {
             assertNotNull(x);
             assertTrue(x instanceof SimpleFilter);
             SimpleFilter filter = (SimpleFilter)x;
-            assertNotNull(filter.metadata());
-            assertNotNull(filter.metadata().getter());
-            assertNotNull(filter.metadata().type());
+            assertNotNull(filter.field());
             shouldFindOrNull.set(shouldFindOrNull.get() | filter.orNull());
         });
         assertTrue(shouldFindOrNull.get());

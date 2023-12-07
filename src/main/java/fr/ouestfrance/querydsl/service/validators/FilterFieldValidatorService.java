@@ -50,8 +50,8 @@ public class FilterFieldValidatorService {
      */
     public Optional<FilterFieldViolation> validate(SimpleFilter filter) {
         return getValidator(filter.operation())
-                .filter(x-> !x.validate((Class<?>) filter.metadata().type()))
-                .map(x -> new FilterFieldViolation(filter.metadata().name(), "Operation " + filter.operation() + " " + x.message()));
+                .filter(x-> !x.validate((Class<?>) filter.field().getType()))
+                .map(x -> new FilterFieldViolation(filter.field().getName(), "Operation " + filter.operation() + " " + x.message()));
     }
 
     /**

@@ -1,12 +1,13 @@
 package fr.ouestfrance.querydsl.service.ext;
 
 import fr.ouestfrance.querydsl.FilterOperation;
-import fr.ouestfrance.querydsl.model.SimpleFilter;
-import fr.ouestfrance.querydsl.model.GroupFilter;
 import fr.ouestfrance.querydsl.model.Filter;
+import fr.ouestfrance.querydsl.model.GroupFilter;
+import fr.ouestfrance.querydsl.model.SimpleFilter;
 import fr.ouestfrance.querydsl.service.FilterFieldAnnotationProcessorService;
-import fr.ouestfrance.querydsl.utils.ReflectUtils;
+import lombok.SneakyThrows;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,29 +18,29 @@ import java.util.Optional;
  * @param <T> Type of returned object
  *            Example: YOu can define a queryStringTranslatorService that transform filterField annotations to rest call
  *            <pre>{@code
- *                       class QueryStringTranslatorService implements QueryDslProcessorService<String>{
- *                            List<Mapper<String>> mappers = List.of(InMapper, EqualsMapper, ...);
+ *                                                                              class QueryStringTranslatorService implements QueryDslProcessorService<String>{
+ *                                                                                   List<Mapper<String>> mappers = List.of(InMapper, EqualsMapper, ...);
  *
- *                            public Mapper<String> getMapper(FilterOperation operations){
- *                                mappers.stream().filter(x->x.getOperation().equals(operation)).findFirst()
- *                                 .orElse(new DefaultMapper());
- *                            }
+ *                                                                                   public Mapper<String> getMapper(FilterOperation operations){
+ *                                                                                       mappers.stream().filter(x->x.getOperation().equals(operation)).findFirst()
+ *                                                                                        .orElse(new DefaultMapper());
+ *                                                                                   }
  *
- *                            public group(List<String> filters, GroupFilter.Operand operand){
- *                                return String.join(" "+operand+" ", filters); // Will result item1 AND item2 AND ...
- *                            }
- *                       }
- *                       }</pre>
+ *                                                                                   public group(List<String> filters, GroupFilter.Operand operand){
+ *                                                                                       return String.join(" "+operand+" ", filters); // Will result item1 AND item2 AND ...
+ *                                                                                   }
+ *                                                                              }
+ *                                                                              }</pre>
  *            With mappers implementations like this
  *            <pre>{@code
- *                       class EqualsMapper implements Mapper<String>{
+ *                                                                              class EqualsMapper implements Mapper<String>{
  *
- *                            String map(FilterFieldInfoModel model, Object data){
- *                                return model.getKey()+".equals("+data+")"
- *                                 // "uuid.equals(25)"
- *                            }
- *                       }
- *                       }</pre>
+ *                                                                                   String map(FilterFieldInfoModel model, Object data){
+ *                                                                                       return model.getKey()+".equals("+data+")"
+ *                                                                                        // "uuid.equals(25)"
+ *                                                                                   }
+ *                                                                              }
+ *                                                                              }</pre>
  */
 public interface QueryDslProcessorService<T> {
 
@@ -106,14 +107,10 @@ public interface QueryDslProcessorService<T> {
      * @return concrete filter with values if the object has data
      */
     private Optional<T> handleFilter(SimpleFilter filter, Object object) {
-        Object data = ReflectUtils.safeGet(object, filter.metadata().getter());
-        if (data == null) {
-            return Optional.empty();
-        }
-        FilterOperation operation = filter.operation();
-        Mapper<T> mapper = getMapper(operation);
-        return Optional.ofNullable(mapper.map(filter, data));
+        return ReflectUtils.getObject(filter.field(), object)
+                .map(x -> getMapper(filter.operation()).map(filter, x));
     }
+
 
     /**
      * Return concrete mapper for a specific operation
