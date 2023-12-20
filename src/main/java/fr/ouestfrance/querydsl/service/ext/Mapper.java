@@ -22,6 +22,7 @@ import fr.ouestfrance.querydsl.model.SimpleFilter;
  *     }
  * }
  * }</pre>
+ *
  * @param <T> type of result
  */
 public interface Mapper<T> {
@@ -40,5 +41,5 @@ public interface Mapper<T> {
      *
      * @return operation type
      */
-    FilterOperation operation();
+    Class<? extends FilterOperation> operation();
 }

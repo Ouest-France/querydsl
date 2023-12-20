@@ -1,43 +1,45 @@
 package fr.ouestfrance.querydsl;
 
-/**
- * Type of operations
- */
-public enum FilterOperation {
-    /**
-     * Should be equals
-     */
-    EQ,
-    /**
-     * Should contains data
-     */
-    LIKE,
-    /**
-     * Should be greater than
-     */
-    GT,
-    /**
-     * Should be greater than or equals to
-     */
-    GTE,
-    /**
-     * Should be less than
-     */
-    LT,
-    /**
-     * Should be less than or equals to
-     */
-    LTE,
-    /**
-     * Should be not equals to
-     */
-    NEQ,
-    /**
-     * Should be in a specific list
-     */
-    IN,
-    /**
-     * Should not be in a specific list
-     */
-    NOT_IN
+import fr.ouestfrance.querydsl.service.validators.ValidatedBy;
+import fr.ouestfrance.querydsl.service.validators.impl.CollectionValidator;
+import fr.ouestfrance.querydsl.service.validators.impl.ComparableValidator;
+import fr.ouestfrance.querydsl.service.validators.impl.StringValidator;
+
+public interface FilterOperation {
+
+    @ValidatedBy(ComparableValidator.class)
+    class NEQ implements FilterOperation {
+    }
+
+    @ValidatedBy(ComparableValidator.class)
+    class EQ implements FilterOperation {
+    }
+
+    @ValidatedBy(ComparableValidator.class)
+    class GT implements FilterOperation {
+    }
+
+    @ValidatedBy(ComparableValidator.class)
+    class GTE implements FilterOperation {
+    }
+
+    @ValidatedBy(ComparableValidator.class)
+    class LT implements FilterOperation {
+    }
+
+    @ValidatedBy(ComparableValidator.class)
+    class LTE implements FilterOperation {
+    }
+
+    @ValidatedBy(StringValidator.class)
+    class LIKE implements FilterOperation {
+    }
+
+    @ValidatedBy(CollectionValidator.class)
+    class IN implements FilterOperation {
+    }
+
+    @ValidatedBy(CollectionValidator.class)
+    class NOTIN implements FilterOperation {
+    }
 }

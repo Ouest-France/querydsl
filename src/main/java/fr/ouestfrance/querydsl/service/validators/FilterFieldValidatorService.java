@@ -2,13 +2,10 @@ package fr.ouestfrance.querydsl.service.validators;
 
 import fr.ouestfrance.querydsl.FilterOperation;
 import fr.ouestfrance.querydsl.model.SimpleFilter;
-import fr.ouestfrance.querydsl.service.validators.impl.EqualsValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.GreaterLessValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.InValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.LikeValidator;
 
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,9 +35,9 @@ import java.util.Optional;
 public class FilterFieldValidatorService {
 
     /**
-     * List of validators
+     * Map of validators
      */
-    private final List<FilterFieldValidator> validators = List.of(new EqualsValidator(), new GreaterLessValidator(), new InValidator(), new LikeValidator());
+    private static final Map<Class<? extends FilterFieldValidator>, FilterFieldValidator> VALIDATOR_MAP = new HashMap<>();
 
     /**
      * Check each filter and build a filter of violations
@@ -49,9 +46,12 @@ public class FilterFieldValidatorService {
      * @return empty filter if everything is ok, otherwise it returns filter of {@link FilterFieldViolation}
      */
     public Optional<FilterFieldViolation> validate(SimpleFilter filter) {
-        return getValidator(filter.operation())
-                .filter(x-> !x.validate((Class<?>) filter.field().getType()))
-                .map(x -> new FilterFieldViolation(filter.field().getName(), "Operation " + filter.operation() + " " + x.message()));
+        FilterFieldValidator validator = getValidator(filter.operation());
+        if (validator.validate(filter.field().getType())) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new FilterFieldViolation(filter.field().getName(), "Operation " + filter.operation() + " " + validator.message()));
+        }
     }
 
     /**
@@ -60,7 +60,18 @@ public class FilterFieldValidatorService {
      * @param operation operation in the FilterField annotation
      * @return Validator for this field
      */
-    private Optional<FilterFieldValidator> getValidator(FilterOperation operation) {
-        return validators.stream().filter(x -> Arrays.asList(x.getClass().getAnnotation(ValidatedBy.class).value()).contains(operation)).findFirst();
+    private FilterFieldValidator getValidator(Class<? extends FilterOperation> operation) {
+        ValidatedBy validator = operation.getAnnotation(ValidatedBy.class);
+        if (validator == null) {
+            throw new IllegalStateException("Operation " + operation + " should be annotated with @ValidatedBy");
+        }
+        return VALIDATOR_MAP.computeIfAbsent(validator.value(), x -> {
+            try {
+                return x.getConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                     InvocationTargetException e) {
+                throw new IllegalStateException("Validator " + x + " should have a default constructor", e);
+            }
+        });
     }
 }

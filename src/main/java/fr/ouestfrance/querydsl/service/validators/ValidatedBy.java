@@ -17,5 +17,5 @@ public @interface ValidatedBy {
      *
      * @return operation
      */
-    FilterOperation[] value();
+    Class<? extends FilterFieldValidator> value();
 }

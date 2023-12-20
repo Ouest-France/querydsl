@@ -14,8 +14,8 @@ public class DummyRequestOrSingleField {
 
     @FilterField(key = "size", groupName = "group1")
     @FilterFields(groupName = "group1", value = {
-            @FilterField(key = "minSize", operation = FilterOperation.GTE),
-            @FilterField(key = "maxSize", operation = FilterOperation.LTE)
+            @FilterField(key = "minSize", operation = FilterOperation.GTE.class),
+            @FilterField(key = "maxSize", operation = FilterOperation.LTE.class)
     })
     private String size;
 

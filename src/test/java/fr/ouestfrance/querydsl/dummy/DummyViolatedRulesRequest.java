@@ -1,7 +1,9 @@
 package fr.ouestfrance.querydsl.dummy;
 
 import fr.ouestfrance.querydsl.FilterField;
-import fr.ouestfrance.querydsl.FilterOperation;
+import fr.ouestfrance.querydsl.FilterOperation.IN;
+import fr.ouestfrance.querydsl.FilterOperation.LTE;
+import fr.ouestfrance.querydsl.FilterOperation.LIKE;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,12 +13,12 @@ import java.util.List;
 @Setter
 public class DummyViolatedRulesRequest {
 
-    @FilterField(operation = FilterOperation.IN)
+    @FilterField(operation = IN.class)
     private String code;
 
-    @FilterField(operation = FilterOperation.LTE, key = "edition")
+    @FilterField(operation = LTE.class, key = "edition")
     private List<String> editions;
 
-    @FilterField(operation = FilterOperation.LIKE)
+    @FilterField(operation = LIKE.class)
     private int quantity;
 }

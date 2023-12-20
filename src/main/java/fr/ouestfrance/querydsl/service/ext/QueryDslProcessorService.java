@@ -118,7 +118,7 @@ public interface QueryDslProcessorService<T> {
      * @param operation type of operation
      * @return mapper for this operation
      */
-    Mapper<T> getMapper(FilterOperation operation);
+    Mapper<T> getMapper(Class<? extends FilterOperation> operation);
 
     /**
      * Allow to group multiple filters with logical operand
