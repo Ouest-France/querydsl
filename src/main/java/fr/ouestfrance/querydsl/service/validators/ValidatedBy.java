@@ -1,7 +1,5 @@
 package fr.ouestfrance.querydsl.service.validators;
 
-import fr.ouestfrance.querydsl.FilterOperation;
-
 import java.lang.annotation.*;
 
 /**
@@ -17,5 +15,5 @@ public @interface ValidatedBy {
      *
      * @return operation
      */
-    FilterOperation[] value();
+    Class<? extends FilterFieldValidator> value();
 }

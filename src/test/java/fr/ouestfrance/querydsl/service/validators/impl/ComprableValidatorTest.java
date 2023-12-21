@@ -1,7 +1,6 @@
 package fr.ouestfrance.querydsl.service.validators.impl;
 
 import fr.ouestfrance.querydsl.service.validators.FilterFieldValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.GreaterLessValidator;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -12,9 +11,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class GreaterLessValidatorTest {
+class ComprableValidatorTest {
 
-    private final FilterFieldValidator validator = new GreaterLessValidator();
+    private final FilterFieldValidator validator = new ComparableValidator();
     @Test
     void shouldValidate(){
         assertTrue(validator.validate(String.class));

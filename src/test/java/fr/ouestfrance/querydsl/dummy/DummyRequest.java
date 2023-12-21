@@ -18,11 +18,11 @@ public class DummyRequest {
     @FilterField(key = "productCode")
     private String code;
 
-    @FilterField(operation = FilterOperation.IN, key = "edition")
+    @FilterField(operation = FilterOperation.IN.class, key = "edition")
     private List<String> editions;
 
-    @FilterField(operation = FilterOperation.GTE, key = "startDate")
-    @FilterField(operation = FilterOperation.LTE, key = "endDate", orNull = true)
+    @FilterField(operation = FilterOperation.GTE.class, key = "startDate")
+    @FilterField(operation = FilterOperation.LTE.class, key = "endDate", orNull = true)
     private LocalDate validityDate;
 
     @FilterField

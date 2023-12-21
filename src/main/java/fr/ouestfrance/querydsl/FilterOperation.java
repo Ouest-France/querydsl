@@ -1,43 +1,75 @@
 package fr.ouestfrance.querydsl;
 
+import fr.ouestfrance.querydsl.service.validators.ValidatedBy;
+import fr.ouestfrance.querydsl.service.validators.impl.CollectionValidator;
+import fr.ouestfrance.querydsl.service.validators.impl.ComparableValidator;
+import fr.ouestfrance.querydsl.service.validators.impl.StringValidator;
+
 /**
- * Type of operations
+ * Operations allowed by querydsl
  */
-public enum FilterOperation {
+public interface FilterOperation {
+
     /**
-     * Should be equals
+     * Not Equals Operation
      */
-    EQ,
+    @ValidatedBy(ComparableValidator.class)
+    class NEQ implements FilterOperation {
+    }
+
     /**
-     * Should contains data
+     * Equals Operation
      */
-    LIKE,
+    @ValidatedBy(ComparableValidator.class)
+    class EQ implements FilterOperation {
+    }
+
     /**
-     * Should be greater than
+     * Greater than Operation
      */
-    GT,
+    @ValidatedBy(ComparableValidator.class)
+    class GT implements FilterOperation {
+    }
+
     /**
-     * Should be greater than or equals to
+     * Greater than or equals Operation
      */
-    GTE,
+    @ValidatedBy(ComparableValidator.class)
+    class GTE implements FilterOperation {
+    }
+
     /**
-     * Should be less than
+     * Less than Operation
      */
-    LT,
+    @ValidatedBy(ComparableValidator.class)
+    class LT implements FilterOperation {
+    }
+
     /**
-     * Should be less than or equals to
+     * Less than or equals Operation
      */
-    LTE,
+    @ValidatedBy(ComparableValidator.class)
+    class LTE implements FilterOperation {
+    }
+
     /**
-     * Should be not equals to
+     * Like Operation
      */
-    NEQ,
+    @ValidatedBy(StringValidator.class)
+    class LIKE implements FilterOperation {
+    }
+
     /**
-     * Should be in a specific list
+     * Not Like Operation
      */
-    IN,
+    @ValidatedBy(CollectionValidator.class)
+    class IN implements FilterOperation {
+    }
+
     /**
-     * Should not be in a specific list
+     * Not In Operation
      */
-    NOT_IN
+    @ValidatedBy(CollectionValidator.class)
+    class NOTIN implements FilterOperation {
+    }
 }

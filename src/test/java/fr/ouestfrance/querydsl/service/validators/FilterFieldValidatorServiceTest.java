@@ -15,25 +15,25 @@ class FilterFieldValidatorServiceTest {
 
     private final FilterFieldValidatorService validator = new FilterFieldValidatorService();
 
-    static class SampleClass{
+    static class SampleClass {
         List<String> lists;
         String value;
     }
 
     @SneakyThrows
     @Test
-    void shouldSentViolations(){
+    void shouldSentViolations() {
         Optional<FilterFieldViolation> violations = validator.validate(
-                new SimpleFilter("test", FilterOperation.EQ, false, SampleClass.class.getDeclaredField("lists")));
+                new SimpleFilter("test", FilterOperation.EQ.class, false, SampleClass.class.getDeclaredField("lists")));
 
         assertFalse(violations.isEmpty());
     }
 
     @SneakyThrows
     @Test
-    void shouldValidate(){
+    void shouldValidate() {
         Optional<FilterFieldViolation> violations = validator.validate(
-                new SimpleFilter("test", FilterOperation.EQ, false, SampleClass.class.getDeclaredField("value")));
+                new SimpleFilter("test", FilterOperation.EQ.class, false, SampleClass.class.getDeclaredField("value")));
 
         assertTrue(violations.isEmpty());
     }

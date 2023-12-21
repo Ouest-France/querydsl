@@ -17,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 class QueryDslProcessorServiceTest {
 
     QueryDslProcessorService<String> translatorService = new QueryDslProcessorService<>() {
+
+
         @Override
-        public Mapper<String> getMapper(FilterOperation operation) {
+        public Mapper<String> getMapper(Class<? extends FilterOperation> operation) {
             return new Mapper<>() {
                 @Override
                 public String map(SimpleFilter filterField, Object data) {
@@ -26,11 +28,12 @@ class QueryDslProcessorServiceTest {
                 }
 
                 @Override
-                public FilterOperation operation() {
-                    return null;
+                public Class<? extends FilterOperation> operation() {
+                    return FilterOperation.EQ.class;
                 }
             };
         }
+
 
         @Override
         public String group(List<String> filters, GroupFilter.Operand operand) {

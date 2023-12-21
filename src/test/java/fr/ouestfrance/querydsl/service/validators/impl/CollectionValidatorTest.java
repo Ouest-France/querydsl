@@ -1,7 +1,6 @@
 package fr.ouestfrance.querydsl.service.validators.impl;
 
 import fr.ouestfrance.querydsl.service.validators.FilterFieldValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.LikeValidator;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,19 +8,22 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-class LikeValidatorTest {
+class CollectionValidatorTest {
 
-    private final FilterFieldValidator validator = new LikeValidator();
+    private final FilterFieldValidator validator = new CollectionValidator();
     @Test
     void shouldValidate(){
-        assertTrue(validator.validate(String.class));
+        assertTrue(validator.validate(Set.class));
+        assertTrue(validator.validate(ArrayList.class));
+        assertTrue(validator.validate(LinkedList.class));
+        assertTrue(validator.validate(HashSet.class));
     }
 
     @Test
     void shouldUnValidate(){
+        assertFalse(validator.validate(String.class));
         assertFalse(validator.validate(Double.class));
         assertFalse(validator.validate(LocalDate.class));
         assertFalse(validator.validate(LocalDateTime.class));
@@ -29,9 +31,5 @@ class LikeValidatorTest {
         assertFalse(validator.validate(UUID.class));
         assertFalse(validator.validate(Integer.class));
         assertFalse(validator.validate(BigDecimal.class));
-        assertFalse(validator.validate(Set.class));
-        assertFalse(validator.validate(ArrayList.class));
-        assertFalse(validator.validate(LinkedList.class));
-        assertFalse(validator.validate(HashSet.class));
     }
 }

@@ -5,22 +5,19 @@ import fr.ouestfrance.querydsl.service.validators.FilterFieldValidator;
 import fr.ouestfrance.querydsl.service.validators.ValidatedBy;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
-
 /**
- * Validator that handle filter operations containing (IN, NOT_IN)
+ * Validator that handle filter operations giving equalities (EQ, NEQ)
  */
-@ValidatedBy({FilterOperation.IN, FilterOperation.NOT_IN})
 @NoArgsConstructor
-public class InValidator implements FilterFieldValidator {
+public class ComparableValidator implements FilterFieldValidator {
 
     @Override
     public boolean validate(Class<?> clazz) {
-        return Collection.class.isAssignableFrom(clazz);
+        return Comparable.class.isAssignableFrom(clazz) || clazz.isPrimitive();
     }
 
     @Override
     public String message() {
-        return "should be applied to Collections (Set, List, ...)";
+        return "should be applied to Comparables values (LocaleDate, LocaleDateTime, String, ...) or primitives types (boolean, int, long, ...)";
     }
 }

@@ -25,15 +25,18 @@ public @interface FilterField {
      *
      * @return operation type
      */
-    FilterOperation operation() default FilterOperation.EQ;
+    Class<? extends FilterOperation> operation() default FilterOperation.EQ.class;
 
     /**
      * Should handle null possible value (isNull or isEqualsTo(XXX))
+     *
      * @return <code>true</code> is should handle null, otherwise <code>false</code>
      */
     boolean orNull() default false;
+
     /**
      * Group the filter in "or group" every filter with "orGroup" will be joined together
+     *
      * @return group name
      */
     String groupName() default "";
