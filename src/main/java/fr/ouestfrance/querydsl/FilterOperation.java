@@ -1,6 +1,7 @@
 package fr.ouestfrance.querydsl;
 
 import fr.ouestfrance.querydsl.service.validators.ValidatedBy;
+import fr.ouestfrance.querydsl.service.validators.impl.BooleanValidator;
 import fr.ouestfrance.querydsl.service.validators.impl.CollectionValidator;
 import fr.ouestfrance.querydsl.service.validators.impl.ComparableValidator;
 import fr.ouestfrance.querydsl.service.validators.impl.StringValidator;
@@ -71,5 +72,12 @@ public interface FilterOperation {
      */
     @ValidatedBy(CollectionValidator.class)
     class NOTIN implements FilterOperation {
+    }
+
+    /**
+     * Is null Operation
+     */
+    @ValidatedBy(BooleanValidator.class)
+    class ISNULL implements FilterOperation {
     }
 }

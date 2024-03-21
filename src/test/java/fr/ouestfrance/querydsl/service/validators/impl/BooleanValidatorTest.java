@@ -11,23 +11,24 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ComprableValidatorTest {
+class BooleanValidatorTest {
 
-    private final FilterFieldValidator validator = new ComparableValidator();
+    private final FilterFieldValidator validator = new BooleanValidator();
     @Test
     void shouldValidate(){
-        assertTrue(validator.validate(String.class));
-        assertTrue(validator.validate(Double.class));
-        assertTrue(validator.validate(LocalDate.class));
-        assertTrue(validator.validate(LocalDateTime.class));
-        assertTrue(validator.validate(Date.class));
-        assertTrue(validator.validate(UUID.class));
-        assertTrue(validator.validate(Integer.class));
-        assertTrue(validator.validate(BigDecimal.class));
+        assertTrue(validator.validate(Boolean.class));
     }
 
     @Test
     void shouldUnValidate(){
+        assertFalse(validator.validate(String.class));
+        assertFalse(validator.validate(Double.class));
+        assertFalse(validator.validate(LocalDate.class));
+        assertFalse(validator.validate(LocalDateTime.class));
+        assertFalse(validator.validate(Date.class));
+        assertFalse(validator.validate(UUID.class));
+        assertFalse(validator.validate(Integer.class));
+        assertFalse(validator.validate(BigDecimal.class));
         assertFalse(validator.validate(Set.class));
         assertFalse(validator.validate(ArrayList.class));
         assertFalse(validator.validate(LinkedList.class));
