@@ -1,10 +1,7 @@
 package fr.ouestfrance.querydsl;
 
 import fr.ouestfrance.querydsl.service.validators.ValidatedBy;
-import fr.ouestfrance.querydsl.service.validators.impl.BooleanValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.CollectionValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.ComparableValidator;
-import fr.ouestfrance.querydsl.service.validators.impl.StringValidator;
+import fr.ouestfrance.querydsl.service.validators.impl.*;
 
 /**
  * Operations allowed by querydsl
@@ -79,5 +76,13 @@ public interface FilterOperation {
      */
     @ValidatedBy(BooleanValidator.class)
     class ISNULL implements FilterOperation {
+    }
+
+
+    /**
+     * Between Operation
+     */
+    @ValidatedBy(HasRangeValidator.class)
+    class BETWEEN implements FilterOperation {
     }
 }
