@@ -43,36 +43,36 @@ public class FilterFieldAnnotationScanner {
 
         List<FilterFieldViolation> violations = new ArrayList<>();
 
-        Arrays.stream(clazz.getDeclaredFields())
+        getAllFields(clazz).stream()
                 .filter(this::hasFilterFieldAnnotation)
                 .forEach(
-                field -> {
-                     FilterFields filterFields = field.getAnnotation(FilterFields.class);
-                    List<FilterField> groupFilters = new ArrayList<>();
-                    if (filterFields!= null && !filterFields.groupName().isEmpty()) {
-                        groupFilters.addAll(Arrays.stream(filterFields.value()).toList());
-                        GroupFilter filterAndGroup = new GroupFilter(UUID.randomUUID().toString(), new ArrayList<>(), GroupFilter.Operand.AND);
-                        Arrays.stream(filterFields.value())
-                                .forEach(filterField -> {
-                                    SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), field);
-                                    validatorService.validate(filter).ifPresent(violations::add);
-                                    filterAndGroup.filters().add(filter);
-                                });
-                        appendToGroup(rootGroup, filterFields.groupName(), filterAndGroup);
-                    }
-
-                    // On filterField
-                    Arrays.stream(field.getAnnotationsByType(FilterField.class))
-                            .filter(x-> !groupFilters.contains(x))
-                            .forEach(
-                            filterField -> {
-                                SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), field);
-                                validatorService.validate(filter).ifPresent(violations::add);
-                                appendToGroup(rootGroup, filterField.groupName(), filter);
+                        field -> {
+                            FilterFields filterFields = field.getAnnotation(FilterFields.class);
+                            List<FilterField> groupFilters = new ArrayList<>();
+                            if (filterFields != null && !filterFields.groupName().isEmpty()) {
+                                groupFilters.addAll(Arrays.stream(filterFields.value()).toList());
+                                GroupFilter filterAndGroup = new GroupFilter(UUID.randomUUID().toString(), new ArrayList<>(), GroupFilter.Operand.AND);
+                                Arrays.stream(filterFields.value())
+                                        .forEach(filterField -> {
+                                            SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), field);
+                                            validatorService.validate(filter).ifPresent(violations::add);
+                                            filterAndGroup.filters().add(filter);
+                                        });
+                                appendToGroup(rootGroup, filterFields.groupName(), filterAndGroup);
                             }
-                    );
-                }
-        );
+
+                            // On filterField
+                            Arrays.stream(field.getAnnotationsByType(FilterField.class))
+                                    .filter(x -> !groupFilters.contains(x))
+                                    .forEach(
+                                            filterField -> {
+                                                SimpleFilter filter = new SimpleFilter(firstNotEmpty(filterField.key(), field.getName()), filterField.operation(), filterField.orNull(), field);
+                                                validatorService.validate(filter).ifPresent(violations::add);
+                                                appendToGroup(rootGroup, filterField.groupName(), filter);
+                                            }
+                                    );
+                        }
+                );
 
         // Check for violations
         if (!violations.isEmpty()) {
@@ -83,9 +83,10 @@ public class FilterFieldAnnotationScanner {
 
     /**
      * Append a filter to a groupName, if no group found, it will compute a new OR Group
+     *
      * @param rootGroup root group
      * @param groupName name of the searched group
-     * @param filter filter to append
+     * @param filter    filter to append
      */
     private void appendToGroup(GroupFilter rootGroup, String groupName, Filter filter) {
         if (groupName.isEmpty()) {
@@ -103,6 +104,7 @@ public class FilterFieldAnnotationScanner {
 
     /**
      * Retrieve a rootGroup by its name
+     *
      * @param rootGroup rootGroup
      * @param groupName name of the searched rootGroup
      * @return optional rootGroup
@@ -113,6 +115,22 @@ public class FilterFieldAnnotationScanner {
                 .map(GroupFilter.class::cast)
                 .filter(filterGroup -> groupName.equals(filterGroup.name()))
                 .findFirst();
+    }
+
+    /**
+     * Collect all fields from the class hierarchy (class + all superclasses up to Object)
+     *
+     * @param clazz class to inspect
+     * @return list of all declared fields
+     */
+    private List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        Class<?> current = clazz;
+        while (current != null && current != Object.class) {
+            fields.addAll(Arrays.asList(current.getDeclaredFields()));
+            current = current.getSuperclass();
+        }
+        return fields;
     }
 
     /**
