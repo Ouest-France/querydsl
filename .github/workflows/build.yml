@@ -31,9 +31,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_PROJECT: Ouest-France_${{ github.event.repository.name }}
-        run: mvn -ntp -B sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} -Dsonar.projectKey=$SONAR_PROJECT -Dsonar.branch.name=${GITHUB_REF##*/}
+        run: mvn -ntp -B sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} -Dsonar.projectKey=$SONAR_PROJECT
+      - name: Prepare Settings
+        uses: whelk-io/maven-settings-xml-action@v22
+        with:
+          servers: '[{ "id": "central", "username": "${{ secrets.OSSRH_USERNAME }}", "password": "${{ secrets.OSSRH_TOKEN }}" }]'
       - name: Deploy Snapshot
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
         run: mvn -ntp -B deploy -DskipTests=true
