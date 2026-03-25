@@ -4,9 +4,9 @@ import fr.ouestfrance.querydsl.FilterOperation;
 import fr.ouestfrance.querydsl.model.SimpleFilter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * FilterFieldValidator service allow to check the validity of annotated clazz
@@ -37,7 +37,7 @@ public class FilterFieldValidatorService {
     /**
      * Map of validators
      */
-    private static final Map<Class<? extends FilterFieldValidator>, FilterFieldValidator> VALIDATOR_MAP = new HashMap<>();
+    private static final Map<Class<? extends FilterFieldValidator>, FilterFieldValidator> VALIDATOR_MAP = new ConcurrentHashMap<>();
 
     /**
      * Check each filter and build a filter of violations
